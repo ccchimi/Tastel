@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,26 +69,39 @@ public class MainActivity extends AppCompatActivity {
         // Contenedor de recetas
         LinearLayout recipesContainer = findViewById(R.id.recipesContainer);
 
-        // Recetas simuladas
-        String[] recetas = {"Spaghetti Bolognesa", "Pollo al horno", "Ensalada César", "Tarta de verduras", "Paella Valenciana"};
+        // Datos simulados de recetas
+        String[][] recetas = {
+                {"Spaghetti Bolognesa", "Clásica pasta italiana con salsa de carne y tomate.", "logo"},
+                {"Pollo al horno", "Jugoso pollo al horno con especias.", "logo"},
+                {"Ensalada César", "Ensalada fresca con pollo, crutones y aderezo.", "logo"},
+                {"Tarta de verduras", "Masa casera rellena de vegetales salteados.", "logo"},
+                {"Paella Valenciana", "Arroz con mariscos, pollo y vegetales al estilo español.", "logo"}
+        };
 
-        for (String receta : recetas) {
-            // Creamos dinámicamente un TextView para cada receta
-            TextView recetaView = new TextView(this);
-            recetaView.setText("🍽️ " + receta);
-            recetaView.setTextSize(18f);
-            recetaView.setPadding(0, 16, 0, 16);
+        // Inflar cada receta como Card
+        for (String[] receta : recetas) {
+            View cardView = getLayoutInflater().inflate(R.layout.item_recipe, recipesContainer, false);
 
-            // Le damos estilo (clickeable)
-            recetaView.setOnClickListener(new View.OnClickListener() {
+            TextView title = cardView.findViewById(R.id.recipeTitle);
+            TextView description = cardView.findViewById(R.id.recipeDescription);
+            ImageView image = cardView.findViewById(R.id.recipeImage);
+
+            title.setText(receta[0]);
+            description.setText(receta[1]);
+
+            // Usamos un drawable por ahora (podés cambiarlo por distintas imágenes más adelante)
+            int imageId = getResources().getIdentifier(receta[2], "drawable", getPackageName());
+            image.setImageResource(imageId);
+
+            // Click en la card → mostrar Toast
+            cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(MainActivity.this, "Abrir receta: " + receta, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Abrir receta: " + receta[0], Toast.LENGTH_SHORT).show();
                 }
             });
 
-            // Agregamos al contenedor
-            recipesContainer.addView(recetaView);
+            recipesContainer.addView(cardView);
         }
     }
 }

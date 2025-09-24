@@ -2,6 +2,7 @@ package com.app.tasteit;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -89,15 +90,18 @@ public class MainActivity extends AppCompatActivity {
             title.setText(receta[0]);
             description.setText(receta[1]);
 
-            // Usamos un drawable por ahora (podés cambiarlo por distintas imágenes más adelante)
+            // Usamos un drawable por ahora
             int imageId = getResources().getIdentifier(receta[2], "drawable", getPackageName());
             image.setImageResource(imageId);
 
-            // Click en la card → mostrar Toast
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(MainActivity.this, "Abrir receta: " + receta[0], Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, RecipeDetailActivity.class);
+                    intent.putExtra("title", receta[0]);
+                    intent.putExtra("description", receta[1]);
+                    intent.putExtra("image", imageId);
+                    startActivity(intent);
                 }
             });
 

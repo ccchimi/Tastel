@@ -1,24 +1,68 @@
 package com.app.tasteit;
 
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    EditText etSearch;
+    Button btnSearch, btnPasta, btnCarnes;
+    LinearLayout categoriesLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        // Referencias a elementos
+        etSearch = findViewById(R.id.etSearch);
+        btnSearch = findViewById(R.id.btnSearch);
+        btnPasta = findViewById(R.id.btnPasta);
+        btnCarnes = findViewById(R.id.btnCarnes);
+        categoriesLayout = findViewById(R.id.categoriesLayout);
+
+        // Evento botón Buscar
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = etSearch.getText().toString().trim();
+                if (query.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Ingresa una receta para buscar", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Mostramos mensaje + agregamos dinámicamente un TextView
+                    Toast.makeText(MainActivity.this, "Buscando: " + query, Toast.LENGTH_SHORT).show();
+
+                    TextView newResult = new TextView(MainActivity.this);
+                    newResult.setText("🔎 Resultado para: " + query);
+                    newResult.setTextSize(16f);
+                    newResult.setPadding(10, 10, 10, 10);
+
+                    categoriesLayout.addView(newResult);
+                }
+            }
+        });
+
+        // Evento botón Pastas
+        btnPasta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Recetas de pastas", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Evento botón Carnes
+        btnCarnes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Recetas de carnes", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

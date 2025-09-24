@@ -64,5 +64,30 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Recetas de carnes", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Contenedor de recetas
+        LinearLayout recipesContainer = findViewById(R.id.recipesContainer);
+
+        // Recetas simuladas
+        String[] recetas = {"Spaghetti Bolognesa", "Pollo al horno", "Ensalada César", "Tarta de verduras", "Paella Valenciana"};
+
+        for (String receta : recetas) {
+            // Creamos dinámicamente un TextView para cada receta
+            TextView recetaView = new TextView(this);
+            recetaView.setText("🍽️ " + receta);
+            recetaView.setTextSize(18f);
+            recetaView.setPadding(0, 16, 0, 16);
+
+            // Le damos estilo (clickeable)
+            recetaView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MainActivity.this, "Abrir receta: " + receta, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            // Agregamos al contenedor
+            recipesContainer.addView(recetaView);
+        }
     }
 }

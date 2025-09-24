@@ -1,24 +1,58 @@
-package com.app.tasteit;
+package com.example.tasteit;
 
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class RecipeDetailActivity extends AppCompatActivity {
+
+    ImageView detailImage;
+    TextView detailTitle, detailDescription;
+    Button btnFavorite, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_recipe_detail);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        // Referencias
+        detailImage = findViewById(R.id.detailImage);
+        detailTitle = findViewById(R.id.detailTitle);
+        detailDescription = findViewById(R.id.detailDescription);
+        btnFavorite = findViewById(R.id.btnFavorite);
+        btnBack = findViewById(R.id.btnBack);
+
+        // Recibimos los datos de la receta desde el intent
+        String title = getIntent().getStringExtra("title");
+        String description = getIntent().getStringExtra("description");
+        int imageRes = getIntent().getIntExtra("image", R.drawable.logo);
+
+        detailTitle.setText(title);
+        detailDescription.setText(description);
+        detailImage.setImageResource(imageRes);
+
+        // Botón favorito
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            boolean isFavorite = false;
+
+            @Override
+            public void onClick(View v) {
+                isFavorite = !isFavorite;
+                if (isFavorite) {
+                    Toast.makeText(RecipeDetailActivity.this, title + " agregada a favoritos ⭐", Toast.LENGTH_SHORT).show();
+                    btnFavorite.setText("★ En favoritos");
+                } else {
+                    Toast.makeText(RecipeDetailActivity.this, title + " eliminada de favoritos", Toast.LENGTH_SHORT).show();
+                    btnFavorite.setText("⭐ Favorito");
+                }
+            }
         });
+
+        // Botón volver
+        btnBack.setOnClickListener(v -> finish());
     }
 }

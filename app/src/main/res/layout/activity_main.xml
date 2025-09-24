@@ -34,7 +34,7 @@
             android:src="@drawable/logo"
             android:layout_marginStart="16dp"
             android:contentDescription="Logo" />
-        
+
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -48,7 +48,7 @@
             android:contentDescription="Usuario" />
     </LinearLayout>
 
-    <!-- Título -->
+    <!-- Titulo -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="16dp"/>
 
-    <!-- Barra de búsqueda -->
+    <!-- Barra de busqueda -->
     <LinearLayout
         android:id="@+id/searchBar"
         android:layout_width="0dp"
@@ -104,7 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp"/>
 
-    <!-- Categorías -->
+    <!-- Categori   as -->
     <TextView
         android:id="@+id/tvCategories"
         android:layout_width="wrap_content"

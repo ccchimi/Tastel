@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         btnCarnes = findViewById(R.id.btnCarnes);
         categoriesLayout = findViewById(R.id.categoriesLayout);
 
-        // Evento botón Buscar
+        // Evento boton Buscar
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Evento botón Pastas
+        // Evento boton Pastas
         btnPasta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Evento botón Carnes
+        // Evento boton Carnes
         btnCarnes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         // Contenedor de recetas
         LinearLayout recipesContainer = findViewById(R.id.recipesContainer);
 
-        // Datos simulados de recetas
+        // Datos simulados de recetas (prueba)
         String[][] recetas = {
                 {"Spaghetti Bolognesa", "Clásica pasta italiana con salsa de carne y tomate.", "logo"},
                 {"Pollo al horno", "Jugoso pollo al horno con especias.", "logo"},
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 {"Paella Valenciana", "Arroz con mariscos, pollo y vegetales al estilo español.", "logo"}
         };
 
-        // Inflar cada receta como Card
+        // Transformar a cards
         for (String[] receta : recetas) {
             View cardView = getLayoutInflater().inflate(R.layout.item_recipe, recipesContainer, false);
 

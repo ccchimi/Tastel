@@ -7,13 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Contenido principal de la app -->
+    <!-- Contenido principal -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/secondary">
 
-        <!-- Barra superior -->
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/primary"
+            app:title="@string/app_name"
+            app:titleTextColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Barra superior propia (logo + menú + usuario) -->
         <LinearLayout
             android:id="@+id/navbar"
             android:layout_width="0dp"
@@ -21,7 +33,7 @@
             android:orientation="horizontal"
             android:padding="12dp"
             android:gravity="center_vertical"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -53,7 +65,7 @@
                 android:contentDescription="Usuario" />
         </LinearLayout>
 
-        <!-- Titulo -->
+        <!-- Resto de tu contenido (igual que antes) -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -66,7 +78,6 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="16dp"/>
 
-        <!-- Barra de busqueda -->
         <LinearLayout
             android:id="@+id/searchBar"
             android:layout_width="0dp"
@@ -97,7 +108,6 @@
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
 
-        <!-- Imagen central -->
         <ImageView
             android:id="@+id/mainImage"
             android:layout_width="0dp"
@@ -109,7 +119,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp"/>
 
-        <!-- Categorías -->
         <TextView
             android:id="@+id/tvCategories"
             android:layout_width="wrap_content"
@@ -146,7 +155,6 @@
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
 
-        <!-- Lista de recetas -->
         <ScrollView
             android:id="@+id/scrollRecipes"
             android:layout_width="0dp"
@@ -174,5 +182,4 @@
         android:layout_gravity="start"
         app:menu="@menu/drawer_menu"
         app:headerLayout="@layout/drawer_header"/>
-
 </androidx.drawerlayout.widget.DrawerLayout>

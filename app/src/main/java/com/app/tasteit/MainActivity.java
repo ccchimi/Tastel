@@ -3,6 +3,7 @@ package com.app.tasteit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
@@ -32,22 +33,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Referencias
-        etSearch = findViewById(R.id.etSearch);
-        btnSearch = findViewById(R.id.btnSearch);
-        btnPasta = findViewById(R.id.btnPasta);
-        btnCarnes = findViewById(R.id.btnCarnes);
-        categoriesLayout = findViewById(R.id.categoriesLayout);
+        // Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Drawer
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigationView);
 
-        // Drawer toggle
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Eventos de menú
+        // Eventos menú
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_recetas) {
@@ -64,7 +62,14 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // Evento botón Buscar
+        // Referencias UI
+        etSearch = findViewById(R.id.etSearch);
+        btnSearch = findViewById(R.id.btnSearch);
+        btnPasta = findViewById(R.id.btnPasta);
+        btnCarnes = findViewById(R.id.btnCarnes);
+        categoriesLayout = findViewById(R.id.categoriesLayout);
+
+        // Evento Buscar
         btnSearch.setOnClickListener(v -> {
             String query = etSearch.getText().toString().trim();
             if (query.isEmpty()) {
@@ -83,10 +88,9 @@ public class MainActivity extends AppCompatActivity {
         btnPasta.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Recetas de pastas", Toast.LENGTH_SHORT).show());
         btnCarnes.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Recetas de carnes", Toast.LENGTH_SHORT).show());
 
-        // Contenedor de recetas
+        // Lista dinámica de recetas
         LinearLayout recipesContainer = findViewById(R.id.recipesContainer);
 
-        // Datos simulados
         String[][] recetas = {
                 {"Spaghetti Bolognesa", "Clásica pasta italiana con salsa de carne y tomate.", "logo"},
                 {"Pollo al horno", "Jugoso pollo al horno con especias.", "logo"},

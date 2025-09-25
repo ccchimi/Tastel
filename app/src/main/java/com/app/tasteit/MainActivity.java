@@ -1,9 +1,13 @@
 package com.app.tasteit;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,65 +16,77 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText etSearch;
     Button btnSearch, btnPasta, btnCarnes;
     LinearLayout categoriesLayout;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Referencias a elementos
+        // Referencias
         etSearch = findViewById(R.id.etSearch);
         btnSearch = findViewById(R.id.btnSearch);
         btnPasta = findViewById(R.id.btnPasta);
         btnCarnes = findViewById(R.id.btnCarnes);
         categoriesLayout = findViewById(R.id.categoriesLayout);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigationView);
 
-        // Evento boton Buscar
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String query = etSearch.getText().toString().trim();
-                if (query.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Ingresa una receta para buscar", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Mostramos mensaje + agregamos dinámicamente un TextView
-                    Toast.makeText(MainActivity.this, "Buscando: " + query, Toast.LENGTH_SHORT).show();
+        // Drawer toggle
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-                    TextView newResult = new TextView(MainActivity.this);
-                    newResult.setText("🔎 Resultado para: " + query);
-                    newResult.setTextSize(16f);
-                    newResult.setPadding(10, 10, 10, 10);
+        // Eventos de menú
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_recetas) {
+                Toast.makeText(this, "Sección Recetas", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_comunidad) {
+                Toast.makeText(this, "Sección Comunidad", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_listas) {
+                Toast.makeText(this, "Sección Listas", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_logout) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            }
+            drawerLayout.closeDrawers();
+            return true;
+        });
 
-                    categoriesLayout.addView(newResult);
-                }
+        // Evento botón Buscar
+        btnSearch.setOnClickListener(v -> {
+            String query = etSearch.getText().toString().trim();
+            if (query.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Ingresa una receta para buscar", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Buscando: " + query, Toast.LENGTH_SHORT).show();
+                TextView newResult = new TextView(MainActivity.this);
+                newResult.setText("🔎 Resultado para: " + query);
+                newResult.setTextSize(16f);
+                newResult.setPadding(10, 10, 10, 10);
+                categoriesLayout.addView(newResult);
             }
         });
 
-        // Evento boton Pastas
-        btnPasta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Recetas de pastas", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Evento boton Carnes
-        btnCarnes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Recetas de carnes", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Botones categorías
+        btnPasta.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Recetas de pastas", Toast.LENGTH_SHORT).show());
+        btnCarnes.setOnClickListener(v -> Toast.makeText(MainActivity.this, "Recetas de carnes", Toast.LENGTH_SHORT).show());
 
         // Contenedor de recetas
         LinearLayout recipesContainer = findViewById(R.id.recipesContainer);
 
-        // Datos simulados de recetas (prueba)
+        // Datos simulados
         String[][] recetas = {
                 {"Spaghetti Bolognesa", "Clásica pasta italiana con salsa de carne y tomate.", "logo"},
                 {"Pollo al horno", "Jugoso pollo al horno con especias.", "logo"},
@@ -79,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 {"Paella Valenciana", "Arroz con mariscos, pollo y vegetales al estilo español.", "logo"}
         };
 
-        // Transformar a cards
         for (String[] receta : recetas) {
             View cardView = getLayoutInflater().inflate(R.layout.item_recipe, recipesContainer, false);
 
@@ -90,22 +105,26 @@ public class MainActivity extends AppCompatActivity {
             title.setText(receta[0]);
             description.setText(receta[1]);
 
-            // Usamos un drawable por ahora
             int imageId = getResources().getIdentifier(receta[2], "drawable", getPackageName());
             image.setImageResource(imageId);
 
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, RecipeDetailActivity.class);
-                    intent.putExtra("title", receta[0]);
-                    intent.putExtra("description", receta[1]);
-                    intent.putExtra("image", imageId);
-                    startActivity(intent);
-                }
+            cardView.setOnClickListener(v -> {
+                Intent intent = new Intent(MainActivity.this, RecipeDetailActivity.class);
+                intent.putExtra("title", receta[0]);
+                intent.putExtra("description", receta[1]);
+                intent.putExtra("image", imageId);
+                startActivity(intent);
             });
 
             recipesContainer.addView(cardView);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,163 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/secondary"
     tools:context=".MainActivity">
 
-    <!-- Barra superior -->
-    <LinearLayout
-        android:id="@+id/navbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <!-- Contenido principal de la app -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/secondary">
 
-        <ImageView
-            android:id="@+id/btnMenu"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/menu"
-            android:contentDescription="Menú" />
-
-        <ImageView
-            android:id="@+id/logoApp"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:src="@drawable/logo"
-            android:layout_marginStart="16dp"
-            android:contentDescription="Logo" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:id="@+id/btnUser"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/usuario"
-            android:contentDescription="Usuario" />
-    </LinearLayout>
-
-    <!-- Titulo -->
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/primary"
-        app:layout_constraintTop_toBottomOf="@id/navbar"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp"/>
-
-    <!-- Barra de busqueda -->
-    <LinearLayout
-        android:id="@+id/searchBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp">
-
-        <EditText
-            android:id="@+id/etSearch"
+        <!-- Barra superior -->
+        <LinearLayout
+            android:id="@+id/navbar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/search_hint"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/btnMenu"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/menu"
+                android:contentDescription="Menú" />
+
+            <ImageView
+                android:id="@+id/logoApp"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:src="@drawable/logo"
+                android:layout_marginStart="16dp"
+                android:contentDescription="Logo" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/btnUser"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/usuario"
+                android:contentDescription="Usuario" />
+        </LinearLayout>
+
+        <!-- Titulo -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            app:layout_constraintTop_toBottomOf="@id/navbar"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="16dp"/>
+
+        <!-- Barra de busqueda -->
+        <LinearLayout
+            android:id="@+id/searchBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:padding="8dp"
-            android:background="@drawable/edit_text_background"/>
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp">
 
-        <Button
-            android:id="@+id/btnSearch"
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/search_hint"
+                android:padding="8dp"
+                android:background="@drawable/edit_text_background"/>
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_search"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- Imagen central -->
+        <ImageView
+            android:id="@+id/mainImage"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:src="@drawable/logo"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toBottomOf="@id/searchBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"/>
+
+        <!-- Categorías -->
+        <TextView
+            android:id="@+id/tvCategories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_search"
-            android:backgroundTint="@color/primary"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
-
-    <!-- Imagen central -->
-    <ImageView
-        android:id="@+id/mainImage"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:src="@drawable/logo"
-        android:scaleType="fitCenter"
-        app:layout_constraintTop_toBottomOf="@id/searchBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
-
-    <!-- Categori   as -->
-    <TextView
-        android:id="@+id/tvCategories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/categories"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/mainImage"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <LinearLayout
-        android:id="@+id/categoriesLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tvCategories"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/btnPasta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pastas"/>
-
-        <Button
-            android:id="@+id/btnCarnes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Carnes"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
-
-    <!-- Lista de recetas -->
-    <ScrollView
-        android:id="@+id/scrollRecipes"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/categoriesLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:fillViewport="true">
+            android:text="@string/categories"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/mainImage"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <LinearLayout
-            android:id="@+id/recipesContainer"
-            android:layout_width="match_parent"
+            android:id="@+id/categoriesLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"/>
-    </ScrollView>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tvCategories"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/btnPasta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pastas"/>
+
+            <Button
+                android:id="@+id/btnCarnes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Carnes"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- Lista de recetas -->
+        <ScrollView
+            android:id="@+id/scrollRecipes"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/categoriesLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/recipesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"/>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Menú lateral -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/drawer_header"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

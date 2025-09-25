@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_recetas"
+        android:title="Recetas"
+        android:icon="@drawable/menu"/>
+
+    <item
+        android:id="@+id/nav_comunidad"
+        android:title="Comunidad / Foro"
+        android:icon="@drawable/menu"/>
+
+    <item
+        android:id="@+id/nav_listas"
+        android:title="Listas"
+        android:icon="@drawable/menu"/>
+
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Cerrar sesión"
+        android:icon="@drawable/usuario"/>
+</menu>

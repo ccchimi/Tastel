@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.app.tasteit"
+    namespace = "com.app.tastel"
     compileSdk = 36
 
     defaultConfig {

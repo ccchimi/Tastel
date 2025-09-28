@@ -1,4 +1,4 @@
-package com.app.tasteit;
+package com.app.tastel;
 
 import org.junit.Test;
 

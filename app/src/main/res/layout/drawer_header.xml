@@ -11,11 +11,12 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:src="@drawable/tastel"
-        android:contentDescription="Logo TasteIT" />
+        android:contentDescription="Logo Tastel" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Tastel"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/white"

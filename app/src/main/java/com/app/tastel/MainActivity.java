@@ -1,4 +1,4 @@
-package com.app.tasteit;
+package com.app.tastel;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;

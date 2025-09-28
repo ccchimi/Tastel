@@ -1,4 +1,4 @@
-package com.app.tasteit;
+package com.app.tastel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;

@@ -8,10 +8,10 @@
     android:padding="16dp">
 
     <ImageView
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:src="@drawable/logo"
-        android:contentDescription="Logo"/>
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/tastel"
+        android:contentDescription="Logo TasteIT" />
 
     <TextView
         android:layout_width="wrap_content"

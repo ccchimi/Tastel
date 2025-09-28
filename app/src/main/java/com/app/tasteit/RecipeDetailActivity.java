@@ -30,7 +30,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("title");
         String description = getIntent().getStringExtra("description");
         int imageRes = getIntent().getIntExtra("image", R.drawable.tastel);
-        
         detailTitle.setText(title);
         detailDescription.setText(description);
         detailImage.setImageResource(imageRes);

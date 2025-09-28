@@ -10,8 +10,7 @@
     <ImageView
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:src="@drawable/tastel"
-        android:contentDescription="Logo TasteIT" />
+        android:src="@drawable/tastel" />
 
     <TextView
         android:layout_width="wrap_content"

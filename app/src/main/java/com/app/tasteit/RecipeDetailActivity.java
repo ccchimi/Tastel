@@ -29,8 +29,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
         // Recibimos los datos de la receta desde el intent
         String title = getIntent().getStringExtra("title");
         String description = getIntent().getStringExtra("description");
-        int imageRes = getIntent().getIntExtra("image", R.drawable.logo);
-
+        int imageRes = getIntent().getIntExtra("image", R.drawable.tastel);
+        
         detailTitle.setText(title);
         detailDescription.setText(description);
         detailImage.setImageResource(imageRes);

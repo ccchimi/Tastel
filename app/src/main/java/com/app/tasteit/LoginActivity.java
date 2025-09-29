@@ -3,18 +3,14 @@ package com.app.tasteit;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.app.tasteit.MainActivity;
-import com.app.tasteit.R;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,11 +18,10 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin, btnCreateUser;
     TextView tvForgot;
 
-    // HashMap de usuarios
-    static Map<String, String> users = new HashMap<>();
-
     // Usuario actualmente logueado
     public static String currentUser = null;
+
+    SharedPreferences sharedPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +35,15 @@ public class LoginActivity extends AppCompatActivity {
         btnCreateUser = findViewById(R.id.btnCreateUser);
         tvForgot = findViewById(R.id.tvForgot);
 
-        // Usuario admin predefinido
-        if(users.isEmpty()) {
-            users.put("admin", "1234");
+        // Inicializar SharedPreferences
+        sharedPrefs = getSharedPreferences("UsersPrefs", Context.MODE_PRIVATE);
+
+        // Recuperar sesión activa si existe
+        currentUser = sharedPrefs.getString("currentUser", null);
+
+        // Asegurar que exista usuario admin
+        if(!sharedPrefs.contains("admin")) {
+            sharedPrefs.edit().putString("admin", "1234").apply();
         }
 
         // LOGIN
@@ -50,8 +51,10 @@ public class LoginActivity extends AppCompatActivity {
             String user = etUsername.getText().toString().trim();
             String pass = etPassword.getText().toString().trim();
 
-            if(users.containsKey(user) && users.get(user).equals(pass)) {
-                currentUser = user;  // Guardamos usuario logueado
+            String storedPass = sharedPrefs.getString(user, null);
+            if(storedPass != null && storedPass.equals(pass)) {
+                currentUser = user;
+                sharedPrefs.edit().putString("currentUser", currentUser).apply(); // Guardar sesión
                 Toast.makeText(LoginActivity.this, "Bienvenido " + user, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
@@ -67,10 +70,10 @@ public class LoginActivity extends AppCompatActivity {
 
             if(user.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Usuario y contraseña no pueden estar vacíos", Toast.LENGTH_SHORT).show();
-            } else if(users.containsKey(user)) {
+            } else if(sharedPrefs.contains(user)) {
                 Toast.makeText(this, "El usuario ya existe", Toast.LENGTH_SHORT).show();
             } else {
-                users.put(user, pass);
+                sharedPrefs.edit().putString(user, pass).apply();
                 Toast.makeText(this, "Usuario creado correctamente", Toast.LENGTH_SHORT).show();
             }
         });
@@ -78,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         // OLVIDASTE CONTRASEÑA
         tvForgot.setOnClickListener(v -> {
             String user = etUsername.getText().toString().trim();
-            if(users.containsKey(user)) {
+            if(sharedPrefs.contains(user)) {
                 EditText input = new EditText(this);
                 input.setHint("Nueva contraseña");
 
@@ -88,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                         .setView(input)
                         .setPositiveButton("Aceptar", (dialog, which) -> {
                             String newPass = input.getText().toString().trim();
-                            users.put(user, newPass);
+                            sharedPrefs.edit().putString(user, newPass).apply();
                             Toast.makeText(this, "Contraseña actualizada", Toast.LENGTH_SHORT).show();
                         })
                         .setNegativeButton("Cancelar", null)
@@ -97,5 +100,12 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // Opcional: cerrar sesión
+    public static void logout(Context context, SharedPreferences prefs) {
+        currentUser = null;
+        prefs.edit().remove("currentUser").apply();
+        Toast.makeText(context, "Sesión cerrada", Toast.LENGTH_SHORT).show();
     }
 }

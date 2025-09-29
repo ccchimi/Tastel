@@ -73,7 +73,7 @@
             android:id="@+id/btnRemoveFav"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_remove_fav"
+            android:src="@drawable/quitar"
             android:contentDescription="Quitar de favoritos"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"

@@ -1,6 +1,44 @@
 <resources>
+    <!-- App -->
     <string name="app_name">Tastel</string>
-    <string name="search_hint">¿Qué quieres cocinar hoy?</string>
-    <string name="categories">Categorías</string>
-    <string name="btn_search">Buscar</string>
+
+    <!-- Login -->
+    <string name="login_title">Bienvenido a Tastel</string>
+    <string name="login_username">Usuario</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_button">Ingresar</string>
+    <string name="login_create_user">Crear nuevo usuario</string>
+    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_success">Bienvenido %1$s</string>
+    <string name="login_error">Credenciales incorrectas</string>
+    <string name="user_exists">El usuario ya existe</string>
+    <string name="user_created">Usuario creado correctamente</string>
+    <string name="user_updated">Contraseña actualizada</string>
+    <string name="user_not_found">Usuario no encontrado</string>
+    <string name="empty_fields">Usuario y contraseña no pueden estar vacíos</string>
+
+    <!-- Home -->
+    <string name="home_search_hint">Busca tu nueva creación...</string>
+    <string name="home_search_button">Buscar</string>
+    <string name="section_recipes">Sección Recetas</string>
+    <string name="section_community">Sección Comunidad</string>
+    <string name="section_favorites">Sección Favoritos / Listas</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="session_closed">Sesión cerrada</string>
+
+    <!-- Favoritos -->
+    <string name="must_login_favorites">Debes iniciar sesión para guardar favoritos</string>
+    <string name="already_favorite">Receta ya está en favoritos</string>
+    <string name="added_favorite">Receta guardada en favoritos</string>
+    <string name="removed_favorite">Receta eliminada de favoritos</string>
+    <string name="no_favorites">No tienes recetas favoritas aún</string>
+
+    <!-- Recipe detail -->
+    <string name="recipe_back">Volver</string>
+    <string name="recipe_add_fav">⭐ Favorito</string>
+    <string name="recipe_remove_fav">❤️ Quitar de favoritos</string>
+    <string name="change_password_title">Cambiar contraseña</string>
+    <string name="change_password_message">Ingresa la nueva contraseña para %1$s</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
 </resources>

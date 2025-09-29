@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             if (q.isEmpty()) {
                 // mostrar todo o aplicar categoria activa
                 renderSections(activeCategory);
-                Toast.makeText(this, "Se cargaron " + categoryMap.size() + " categorías", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Mostrando todas las recetas", Toast.LENGTH_SHORT).show();
             } else {
                 renderSearchResults(q);
             }

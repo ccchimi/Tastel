@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ingresar"
-        android:background="@color/primary"
+        android:textColor="@color/secondary"
         android:layout_marginTop="16dp"/>
 
     <!-- Botón Crear Usuario -->
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Crear nuevo usuario"
-        android:background="@color/primary"
+        android:textColor="@color/secondary"
         android:layout_marginTop="8dp"/>
 
     <!-- Olvidaste contraseña -->

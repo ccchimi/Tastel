@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 public class RecipeDetailActivity extends AppCompatActivity {
 
     ImageView detailImage;
@@ -31,17 +29,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         // Recibir datos desde el intent
         String title = getIntent().getStringExtra("title");
         String description = getIntent().getStringExtra("description");
-        String imageUrl = getIntent().getStringExtra("imageUrl");
 
         // Setear datos en la vista
         detailTitle.setText(title);
         detailDescription.setText(description);
-
-        // Cargar imagen desde URL con Glide
-        Glide.with(this)
-                .load(imageUrl)
-                .placeholder(R.drawable.tastel) // Imagen por defecto si falla la carga
-                .into(detailImage);
 
         // Botón favorito
         btnFavorite.setOnClickListener(v -> {

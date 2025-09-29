@@ -41,10 +41,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         Recipe recipe = recipeList.get(position);
         holder.title.setText(recipe.getTitle());
         holder.description.setText(recipe.getDescription());
-        holder.time.setText("Tiempo: " + recipe.getCookingTime());
+
+        int imageResId = context.getResources().getIdentifier(
+                recipe.getImageUrl(), // nombre del drawable (ej: "tastel")
+                "drawable",
+                context.getPackageName()
+        );
 
         Glide.with(context)
-                .load(recipe.getImageUrl())
+                .load(imageResId != 0 ? imageResId : R.drawable.ic_launcher_foreground) // fallback si no encuentra
                 .into(holder.image);
     }
 

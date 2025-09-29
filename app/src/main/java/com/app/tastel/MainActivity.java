@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.tasteit.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {

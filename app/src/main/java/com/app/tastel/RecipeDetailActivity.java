@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.tasteit.R;
+
 public class RecipeDetailActivity extends AppCompatActivity {
 
     ImageView detailImage;

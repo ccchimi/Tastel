@@ -102,12 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         // RecyclerView setup
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecipeAdapter(this, getAllRecipes()) {
-            @Override
-            public int getItemCount() {
-                return 0;
-            }
-        };
+        adapter = new RecipeAdapter(this, getAllRecipes());
         rvRecipes.setAdapter(adapter);
 
         // Botones de categorías

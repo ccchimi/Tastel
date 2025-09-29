@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public abstract class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
     private Context context;
     private List<Recipe> recipeList;
@@ -46,6 +46,11 @@ public abstract class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.R
         Glide.with(context)
                 .load(recipe.getImageUrl())
                 .into(holder.image);
+    }
+
+    @Override
+    public int getItemCount() {
+        return recipeList != null ? recipeList.size() : 0;
     }
 
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {

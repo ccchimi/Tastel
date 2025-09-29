@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.tasteit.MainActivity;
+import com.app.tasteit.R;
+
 import java.util.HashMap;
 import java.util.Map;
 

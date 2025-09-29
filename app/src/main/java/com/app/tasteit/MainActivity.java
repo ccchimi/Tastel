@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             {"Spaghetti Bolognesa","Pastas","Clásica pasta italiana con salsa de carne y tomate.","tastel"},
             {"Fettuccine Alfredo","Pastas","Crema, manteca y parmesano para una salsa sedosa.","tastel"},
             {"Lasagna de Verduras","Pastas","Capas de vegetales asados y bechamel.","tastel"},
-            {"Pollo al horno","Carnes","Jugoso pollo al horno con especias.","ic_launcher"},
+            {"Pollo al horno","Carnes","Jugoso pollo al horno con especias.","tastel"},
             {"Asado clásico","Carnes","Costillar con chimichurri y fuego lento.","tastel"},
             {"Albóndigas en salsa","Carnes","Albóndigas caseras con tomate y hierbas.","tastel"},
             {"Ensalada César","Ensaladas","Lechuga, pollo, crutones y aderezo César.","tastel"},

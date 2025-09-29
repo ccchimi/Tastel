@@ -25,7 +25,7 @@
             android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Buscar receta"
+            android:hint="Busca tu nueva creacion..."
             android:layout_marginTop="8dp"
             android:padding="8dp"
             android:background="@drawable/edit_text_background"/>
@@ -66,6 +66,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/drawer_menu"/>
+        app:menu="@layout/drawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

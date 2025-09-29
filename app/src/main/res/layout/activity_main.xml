@@ -46,7 +46,7 @@
                 android:id="@+id/ivAccount"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_account"
+                android:src="@drawable/cuenta"
                 android:layout_gravity="end"
                 android:contentDescription="Cuenta"
                 android:layout_marginEnd="8dp"/>

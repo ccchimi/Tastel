@@ -25,7 +25,7 @@
                 android:id="@+id/toolbarTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tastelllllll"
+                android:text="Tastel"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"

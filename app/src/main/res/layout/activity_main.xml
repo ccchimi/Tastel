@@ -99,7 +99,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:fillViewport="true">
+            android:fillViewport="false">
 
             <LinearLayout
                 android:id="@+id/recipesContainer"

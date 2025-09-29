@@ -9,10 +9,10 @@
     app:cardElevation="8dp"
     app:strokeColor="@color/primary"
     app:strokeWidth="1dp"
+    app:cardBackgroundColor="@android:color/white"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true"
-    android:background="@android:color/white">
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
-        <!-- Imagen de la receta (URL con Glide) -->
+        <!-- Imagen de la receta -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/recipeImage"
             android:layout_width="90dp"
@@ -28,7 +28,7 @@
             android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             android:contentDescription="@string/recipe_image"
-            app:shapeAppearanceOverlay="@style/RoundedImage"/>
+            app:shapeAppearanceOverlay="@style/RoundedImage" />
 
         <!-- Contenido de la receta -->
         <LinearLayout
@@ -48,7 +48,7 @@
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:maxLines="1"
-                android:ellipsize="end"/>
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/recipeDescription"
@@ -59,7 +59,7 @@
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="4dp"
                 android:maxLines="2"
-                android:ellipsize="end"/>
+                android:ellipsize="end" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

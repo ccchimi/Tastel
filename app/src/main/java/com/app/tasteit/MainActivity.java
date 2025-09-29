@@ -10,6 +10,7 @@ import com.google.android.material.chip.ChipGroup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log; // 👈 agregado
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -106,8 +107,6 @@ public class MainActivity extends AppCompatActivity {
         // Referencias de UI
         etSearch = findViewById(R.id.etSearch);
         btnSearch = findViewById(R.id.btnSearch);
-        // Para la fila de botones de categorias (la creamos dinámicamente)
-        // Reutilizamos categoriesLayout existente como contenedor de botones
         categoriesRow = findViewById(R.id.categoriesLayout);
         recipesContainer = findViewById(R.id.recipesContainer);
 
@@ -121,11 +120,10 @@ public class MainActivity extends AppCompatActivity {
         activeCategory = null;
         renderSections(null);
 
-        // Buscar por texto (muestra secciones que contengan la palabra en el título)
+        // Buscar por texto
         btnSearch.setOnClickListener(v -> {
             String q = etSearch.getText().toString().trim().toLowerCase();
             if (q.isEmpty()) {
-                // mostrar todo o aplicar categoria activa
                 renderSections(activeCategory);
                 Toast.makeText(this, "Mostrando todas las recetas", Toast.LENGTH_SHORT).show();
             } else {
@@ -143,10 +141,10 @@ public class MainActivity extends AppCompatActivity {
             }
             categoryMap.get(cat).add(i);
         }
-        // Asegurar que todas las categories estén en el map, incluso si vacías
         for (String cat : categories) {
             if (!categoryMap.containsKey(cat)) categoryMap.put(cat, new ArrayList<>());
         }
+        Log.d("TASTEL", "buildCategoryMap: total categories in map = " + categoryMap.size());
     }
 
     // Crear chips de categoria dinámicamente
@@ -192,14 +190,13 @@ public class MainActivity extends AppCompatActivity {
     // Renderiza todas las secciones (o sólo una categoría si cat != null)
     private void renderSections(String catFilter) {
         recipesContainer.removeAllViews();
+        Log.d("TASTEL", "renderSections catFilter=" + catFilter);
 
-        // Si queremos sólo una categoría
         if (catFilter != null) {
             List<Integer> indices = categoryMap.get(catFilter);
             if (indices != null && !indices.isEmpty()) {
                 addCategorySection(catFilter, indices);
             } else {
-                // mensaje vacío
                 TextView empty = new TextView(this);
                 empty.setText("No hay recetas en esta categoría.");
                 empty.setPadding(16, 16, 16, 16);
@@ -208,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Si queremos todas las categorias (en orden definido en categories)
         for (String cat : categories) {
             List<Integer> indices = categoryMap.get(cat);
             if (indices != null && !indices.isEmpty()) {
@@ -217,12 +213,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Render para búsqueda por query: muestra secciones que contengan recetas que coincidan
+    // Render para búsqueda por query
     private void renderSearchResults(String q) {
         recipesContainer.removeAllViews();
         Map<String, List<Integer>> results = new LinkedHashMap<>();
 
-        // Buscar coincidencias por título
         for (int i = 0; i < recipesData.length; i++) {
             String title = recipesData[i][0].toLowerCase();
             if (title.contains(q)) {
@@ -240,7 +235,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Agregar secciones para resultados
         for (Map.Entry<String, List<Integer>> e : results.entrySet()) {
             addCategorySection(e.getKey(), e.getValue());
         }
@@ -248,7 +242,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Agrega una sección (titulo + tarjetas de recetas)
     private void addCategorySection(String categoryTitle, List<Integer> indices) {
-        // Titulo de sección
+        Log.d("TASTEL", "addCategorySection: " + categoryTitle + " count=" + indices.size());
+
         TextView sectionTitle = new TextView(this);
         sectionTitle.setText(categoryTitle);
         sectionTitle.setTextSize(20f);
@@ -256,8 +251,9 @@ public class MainActivity extends AppCompatActivity {
         sectionTitle.setTextColor(getResources().getColor(R.color.textPrimary));
         recipesContainer.addView(sectionTitle);
 
-        // Container horizontal para cards (scrollable si querés, aquí vertical por simplicidad)
         for (int idx : indices) {
+            Log.d("TASTEL", "Adding recipe idx=" + idx + " title=" + recipesData[idx][0]);
+
             View cardView = getLayoutInflater().inflate(R.layout.item_recipe, recipesContainer, false);
 
             TextView title = cardView.findViewById(R.id.recipeTitle);
@@ -267,7 +263,6 @@ public class MainActivity extends AppCompatActivity {
             title.setText(recipesData[idx][0]);
             description.setText(recipesData[idx][2]);
 
-            // imagen por defecto (tastel) — podés reemplazar más adelante por drawables concretos
             int imageId = getResources().getIdentifier(recipesData[idx][3], "drawable", getPackageName());
             if (imageId == 0) imageId = R.mipmap.ic_launcher;
             image.setImageResource(imageId);
@@ -286,7 +281,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Para que el toggle (hamburguesa) funcione
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (toggle != null && toggle.onOptionsItemSelected(item)) {

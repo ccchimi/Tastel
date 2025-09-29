@@ -10,10 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.app.tasteit.models.Recipe;
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
+public abstract class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
     private Context context;
     private List<Recipe> recipeList;
@@ -38,25 +39,25 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         Recipe recipe = recipeList.get(position);
-        holder.recipeTitle.setText(recipe.getTitle());
-        holder.recipeDescription.setText(recipe.getDescription());
-        holder.recipeImage.setImageResource(recipe.getImageResId());
-    }
+        holder.title.setText(recipe.getTitle());
+        holder.description.setText(recipe.getDescription());
+        holder.time.setText("Tiempo: " + recipe.getCookingTime());
 
-    @Override
-    public int getItemCount() {
-        return recipeList != null ? recipeList.size() : 0;
+        Glide.with(context)
+                .load(recipe.getImageUrl())
+                .into(holder.image);
     }
 
     public static class RecipeViewHolder extends RecyclerView.ViewHolder {
-        TextView recipeTitle, recipeDescription;
-        ImageView recipeImage;
+        TextView title, description, time;
+        ImageView image;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
-            recipeTitle = itemView.findViewById(R.id.recipeTitle);
-            recipeDescription = itemView.findViewById(R.id.recipeDescription);
-            recipeImage = itemView.findViewById(R.id.recipeImage);
+            title = itemView.findViewById(R.id.recipeTitle);
+            description = itemView.findViewById(R.id.recipeDescription);
+            time = itemView.findViewById(R.id.recipeTime);
+            image = itemView.findViewById(R.id.recipeImage);
         }
     }
 }

@@ -61,6 +61,15 @@
                 android:layout_marginTop="4dp"
                 android:maxLines="2"
                 android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/recipeTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiempo: 30 min"
+                android:textSize="14sp"
+                android:textColor="@color/textSecondary"
+                android:layout_marginTop="4dp"/>
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

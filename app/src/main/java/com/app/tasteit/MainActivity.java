@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.app.tasteit.models.Recipe;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -103,7 +102,12 @@ public class MainActivity extends AppCompatActivity {
 
         // RecyclerView setup
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecipeAdapter(this, getAllRecipes());
+        adapter = new RecipeAdapter(this, getAllRecipes()) {
+            @Override
+            public int getItemCount() {
+                return 0;
+            }
+        };
         rvRecipes.setAdapter(adapter);
 
         // Botones de categorías

@@ -121,17 +121,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // ICONO DE CUENTA - PopupMenu login/logout
         ImageView ivAccount = findViewById(R.id.ivAccount);
         ivAccount.setOnClickListener(v -> {
             PopupMenu menu = new PopupMenu(this, ivAccount);
-            menu.getMenu().add("Login");
-            menu.getMenu().add("Logout");
+
+            if(LoginActivity.currentUser == null) {
+                menu.getMenu().add("Login");
+            } else {
+                menu.getMenu().add("Logout");
+            }
+
             menu.setOnMenuItemClickListener(item -> {
                 if(item.getTitle().equals("Login")) {
                     startActivity(new Intent(this, LoginActivity.class));
                 } else if(item.getTitle().equals("Logout")) {
                     Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
+                    LoginActivity.currentUser = null;  // Cerramos sesión
                     startActivity(new Intent(this, LoginActivity.class));
                     finish();
                 }

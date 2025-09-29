@@ -22,6 +22,9 @@ public class LoginActivity extends AppCompatActivity {
     // HashMap de usuarios
     static Map<String, String> users = new HashMap<>();
 
+    // Usuario actualmente logueado
+    public static String currentUser = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
-
-        // Estos elementos aún no existen en tu XML, tendrás que agregarlos
         btnCreateUser = findViewById(R.id.btnCreateUser);
         tvForgot = findViewById(R.id.tvForgot);
 
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             String pass = etPassword.getText().toString().trim();
 
             if(users.containsKey(user) && users.get(user).equals(pass)) {
+                currentUser = user;  // Guardamos usuario logueado
                 Toast.makeText(LoginActivity.this, "Bienvenido " + user, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();

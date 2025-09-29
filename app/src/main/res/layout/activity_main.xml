@@ -68,30 +68,26 @@
             app:layout_constraintTop_toBottomOf="@id/searchBar"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <LinearLayout
-            android:id="@+id/categoriesLayout"
+        <HorizontalScrollView
+            android:id="@+id/categoriesScroll"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginBottom="16dp"
+            android:scrollbars="none"
             app:layout_constraintTop_toBottomOf="@id/tvCategories"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:overScrollMode="never">
 
-            <Button
-                android:id="@+id/btnPasta"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/categoriesLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pastas"/>
-
-            <Button
-                android:id="@+id/btnCarnes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Carnes"
-                android:layout_marginStart="8dp"/>
-        </LinearLayout>
+                android:orientation="horizontal"
+                app:singleLine="true"
+                app:singleSelection="true"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+        </HorizontalScrollView>
 
         <!-- Lista de recetas -->
         <ScrollView

@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.chip.Chip;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         buildCategoryMap();
 
         // Crear botones de categorias en la fila superior
-        createCategoryButtons();
+        createCategoryChips();
 
         // Render inicial (todas las secciones)
         renderSections(null);
@@ -147,33 +148,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Crea botones de categoria dinámicamente (fila superior)
-    private void createCategoryButtons() {
+// Crea chips de categoria dinámicamente
+    private void createCategoryChips() {
         categoriesRow.removeAllViews();
         for (String cat : categories) {
-            Button b = new Button(this);
-            b.setText(cat);
-            // Estilo básico: rounded background via backgroundTint y padding
-            b.setAllCaps(false);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(12, 6, 12, 6);
-            b.setLayoutParams(lp);
+            Chip chip = new Chip(this);
+            chip.setText(cat);
+            chip.setCheckable(true);
+            chip.setClickable(true);
 
-            b.setOnClickListener(v -> {
-                // Si se clickea la misma categoria la deselecciono
-                if (cat.equals(activeCategory)) {
-                    activeCategory = null;
-                    renderSections(null);
-                    highlightCategoryButton(null);
-                } else {
+            chip.setOnClickListener(v -> {
+                if (chip.isChecked()) {
                     activeCategory = cat;
                     renderSections(cat);
-                    highlightCategoryButton(cat);
+                } else {
+                    activeCategory = null;
+                    renderSections(null);
                 }
             });
 
-            categoriesRow.addView(b);
+            categoriesRow.addView(chip);
         }
     }
 

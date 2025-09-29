@@ -3,7 +3,7 @@ package com.app.tasteit;
 public class Recipe {
     private String title;
     private String description;
-    private int imageResId;  // 👈 en vez de String
+    private int imageResId;
     private String cookingTime;
 
     public Recipe(String title, String description, int imageResId, String cookingTime) {

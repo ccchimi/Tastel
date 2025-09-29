@@ -32,6 +32,15 @@
                 android:layout_gravity="start"
                 android:paddingEnd="8dp"/>
 
+            <TextView
+                android:id="@+id/tvMainTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recetas"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:padding="12dp"/>
+
             <!-- Logo a la derecha -->
             <ImageView
                 android:id="@+id/toolbarLogo"

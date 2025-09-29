@@ -24,21 +24,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     private Context context;
     private List<Recipe> recipeList;
-    private boolean showRemove = false; // true si estamos mostrando favoritos
+    private boolean showRemove; // true si estamos mostrando favoritos
 
-    public RecipeAdapter(Context context, List<Recipe> recipeList) {
+    // Constructor con 3 parámetros
+    public RecipeAdapter(Context context, List<Recipe> recipeList, boolean showRemove) {
         this.context = context;
         this.recipeList = recipeList;
-    }
-
-    // Setter para mostrar o no el botón de quitar
-    public void setShowRemove(boolean showRemove) {
         this.showRemove = showRemove;
-        notifyDataSetChanged();
     }
 
     public void setRecipes(List<Recipe> recipes) {
         this.recipeList = recipes;
+        notifyDataSetChanged();
+    }
+
+    public void setShowRemove(boolean showRemove) {
+        this.showRemove = showRemove;
         notifyDataSetChanged();
     }
 
@@ -117,7 +118,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             description = itemView.findViewById(R.id.recipeDescription);
             time = itemView.findViewById(R.id.recipeTime);
             image = itemView.findViewById(R.id.recipeImage);
-            removeFav = itemView.findViewById(R.id.btnRemoveFav); // nuevo ImageView en item_recipe.xml
+            removeFav = itemView.findViewById(R.id.btnRemoveFav); // ImageView en item_recipe.xml
         }
     }
 }

@@ -3,7 +3,6 @@ package com.app.tasteit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -60,37 +59,48 @@ public class RecipeDetailActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
 
         // Botón Favorito
-        btnFavorite.setOnClickListener(v -> {
-            String currentUser = LoginActivity.currentUser;
-            if(currentUser == null) {
-                Toast.makeText(this, "Debes iniciar sesión para guardar favoritos", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
+        String currentUser = LoginActivity.currentUser;
+        if(currentUser == null) {
+            btnFavorite.setOnClickListener(v ->
+                    Toast.makeText(this, "Debes iniciar sesión para guardar favoritos", Toast.LENGTH_SHORT).show()
+            );
+        } else {
             String key = "favorites_" + currentUser;
-
-            // Recuperar lista existente
-            String json = sharedPrefs.getString(key, null);
             Type type = new TypeToken<List<Recipe>>() {}.getType();
-            List<Recipe> favorites = json == null ? new ArrayList<>() : gson.fromJson(json, type);
+            List<Recipe> favorites = new ArrayList<>();
+            String json = sharedPrefs.getString(key, null);
+            if(json != null) favorites = gson.fromJson(json, type);
 
-            // Verificar duplicado
-            boolean exists = false;
+            boolean[] isFavorite = {false};
             for(Recipe r : favorites) {
                 if(r.getTitle().equals(recipeTitle)) {
-                    exists = true;
+                    isFavorite[0] = true;
                     break;
                 }
             }
 
-            if(exists) {
-                Toast.makeText(this, "Receta ya está en favoritos", Toast.LENGTH_SHORT).show();
-            } else {
-                favorites.add(new Recipe(recipeTitle, recipeDescription, recipeImage, recipeTime));
-                String updatedJson = gson.toJson(favorites);
-                sharedPrefs.edit().putString(key, updatedJson).apply();
-                Toast.makeText(this, "Receta guardada en favoritos", Toast.LENGTH_SHORT).show();
-            }
-        });
+            btnFavorite.setText(isFavorite[0] ? "❌ Quitar de favoritos" : "⭐ Favorito");
+
+            List<Recipe> finalFavorites = favorites;
+            btnFavorite.setOnClickListener(v -> {
+                List<Recipe> updatedFavorites = new ArrayList<>(finalFavorites);
+                if(isFavorite[0]) {
+                    // Quitar
+                    updatedFavorites.removeIf(r -> r.getTitle().equals(recipeTitle));
+                    Toast.makeText(this, "Receta eliminada de favoritos", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Agregar
+                    updatedFavorites.add(new Recipe(recipeTitle, recipeDescription, recipeImage, recipeTime));
+                    Toast.makeText(this, "Receta agregada a favoritos", Toast.LENGTH_SHORT).show();
+                }
+
+                sharedPrefs.edit().putString(key, gson.toJson(updatedFavorites)).apply();
+                finalFavorites.clear();
+                finalFavorites.addAll(updatedFavorites);
+
+                isFavorite[0] = !isFavorite[0];
+                btnFavorite.setText(isFavorite[0] ? "❌ Quitar de favoritos" : "⭐ Favorito");
+            });
+        }
     }
 }

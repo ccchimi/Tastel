@@ -13,10 +13,9 @@
     android:clickable="true"
     android:focusable="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="12dp">
 
         <!-- Imagen de la receta -->
@@ -33,11 +32,11 @@
 
         <!-- Contenido de la receta -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1"
-            android:paddingStart="12dp"
+            android:layout_toEndOf="@id/recipeImage"
+            android:layout_marginStart="12dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -71,5 +70,17 @@
                 android:textColor="@color/textSecondary"
                 android:layout_marginTop="4dp"/>
         </LinearLayout>
-    </LinearLayout>
+
+        <!-- Botón Quitar Favorito -->
+        <ImageView
+            android:id="@+id/btnRemoveFav"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/quitar"
+            android:contentDescription="Quitar de favoritos"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"/>
+    </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

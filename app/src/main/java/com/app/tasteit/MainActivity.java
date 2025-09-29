@@ -13,14 +13,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnSearch;
     LinearLayout categoriesRow;
     RecyclerView rvRecipes;
+    TextView tvMainTitle;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -68,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
     private RecipeAdapter adapter;
     private String activeCategory = null;
     private SharedPreferences sharedPrefs;
+    private boolean showingFavorites = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Toolbar + Drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -85,30 +90,14 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPrefs = getSharedPreferences("FavoritesPrefs", Context.MODE_PRIVATE);
 
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.nav_recetas) {
-                adapter.setRecipes(getAllRecipes());
-            } else if (id == R.id.nav_comunidad) {
-                Toast.makeText(this, "Sección Comunidad", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_favoritos) {
-                loadFavorites();
-            } else if (id == R.id.nav_logout) {
-                LoginActivity.currentUser = null;
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-            }
-            drawerLayout.closeDrawers();
-            return true;
-        });
-
+        tvMainTitle = findViewById(R.id.tvMainTitle); // nuevo TextView en layout arriba del RecyclerView
         etSearch = findViewById(R.id.etSearch);
         btnSearch = findViewById(R.id.btnSearch);
         categoriesRow = findViewById(R.id.categoriesLayout);
         rvRecipes = findViewById(R.id.rvRecipes);
 
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecipeAdapter(this, getAllRecipes());
+        adapter = new RecipeAdapter(this, getAllRecipes(), false); // false = no mostrar botón quitar
         rvRecipes.setAdapter(adapter);
 
         createCategoryButtons();
@@ -117,6 +106,30 @@ public class MainActivity extends AppCompatActivity {
             String q = etSearch.getText().toString().trim().toLowerCase();
             if (q.isEmpty()) adapter.setRecipes(getAllRecipes());
             else adapter.setRecipes(searchRecipes(q));
+        });
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_recetas) {
+                showingFavorites = false;
+                tvMainTitle.setText("Recetas");
+                categoriesRow.setVisibility(View.VISIBLE);
+                adapter.setShowRemove(false);
+                adapter.setRecipes(getAllRecipes());
+            } else if (id == R.id.nav_comunidad) {
+                Toast.makeText(this, "Sección Comunidad", Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_favoritos) {
+                showingFavorites = true;
+                tvMainTitle.setText("Recetas guardadas en favoritos");
+                categoriesRow.setVisibility(View.GONE);
+                loadFavorites();
+            } else if (id == R.id.nav_logout) {
+                LoginActivity.currentUser = null;
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            }
+            drawerLayout.closeDrawers();
+            return true;
         });
 
         ImageView ivAccount = findViewById(R.id.ivAccount);
@@ -202,13 +215,14 @@ public class MainActivity extends AppCompatActivity {
 
         String key = "favorites_" + currentUser;
         String json = sharedPrefs.getString(key, null);
-        Type type = new com.google.gson.reflect.TypeToken<List<Recipe>>(){}.getType();
-        List<Recipe> favorites = json == null ? new ArrayList<>() : new com.google.gson.Gson().fromJson(json, type);
+        Type type = new TypeToken<List<Recipe>>(){}.getType();
+        List<Recipe> favorites = json == null ? new ArrayList<>() : new Gson().fromJson(json, type);
 
         if(favorites.isEmpty()) {
             Toast.makeText(this, "No tienes recetas favoritas aún", Toast.LENGTH_SHORT).show();
         }
 
+        adapter.setShowRemove(true); // mostrar botón Quitar
         adapter.setRecipes(favorites);
     }
 

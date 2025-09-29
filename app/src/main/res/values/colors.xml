@@ -1,7 +1,7 @@
 <resources>
     <color name="primary">#FF6600</color>
-    <color name="secondary">#000000</color>
-    <color name="textPrimary">#FFFFFF</color>
+    <color name="secondary">#FFFFFF</color>
+    <color name="textPrimary">#000000</color>
     <color name="textSecondary">#555555</color>
     <color name="white">#FFFFFF</color>
 </resources>

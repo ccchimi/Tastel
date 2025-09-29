@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Toolbar + Drawer
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -96,12 +94,13 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setRecipes(getAllRecipes());
                 createCategoryButtons();
             } else if (id == R.id.nav_comunidad) {
-                Toast.makeText(this, "Sección Comunidad", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.section_community), Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_favoritos) {
                 showingFavorites = true;
                 loadFavorites();
             } else if (id == R.id.nav_logout) {
                 LoginActivity.currentUser = null;
+                Toast.makeText(this, getString(R.string.session_closed), Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
             }
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             menu.setOnMenuItemClickListener(item -> {
                 if(item.getTitle().equals("Login")) startActivity(new Intent(this, LoginActivity.class));
                 else {
-                    Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.session_closed), Toast.LENGTH_SHORT).show();
                     LoginActivity.currentUser = null;
                     startActivity(new Intent(this, LoginActivity.class));
                     finish();
@@ -185,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createCategoryButtons() {
         categoriesRow.removeAllViews();
-        if(showingFavorites) return; // no mostrar categorías en favoritos
+        if(showingFavorites) return;
 
         for(String cat : categories) {
             Button b = new Button(this);
@@ -214,10 +213,10 @@ public class MainActivity extends AppCompatActivity {
     private void loadFavorites() {
         List<Recipe> favorites = getFavoriteRecipes();
         if(favorites.isEmpty()) {
-            Toast.makeText(this, "No tienes recetas favoritas aún", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_favorites), Toast.LENGTH_SHORT).show();
         }
         adapter.setRecipes(favorites);
-        createCategoryButtons(); // oculta categorías
+        createCategoryButtons();
     }
 
     @Override

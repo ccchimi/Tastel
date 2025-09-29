@@ -62,7 +62,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private void toggleFavorite() {
         String currentUser = LoginActivity.currentUser;
         if(currentUser == null) {
-            Toast.makeText(this, "Debes iniciar sesión para guardar favoritos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.must_login_favorites), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -81,10 +81,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
 
         if(exists) {
-            Toast.makeText(this, "Receta eliminada de favoritos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.removed_favorite), Toast.LENGTH_SHORT).show();
         } else {
             favorites.add(new Recipe(recipeTitle, recipeDescription, recipeImage, recipeTime));
-            Toast.makeText(this, "Receta guardada en favoritos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.added_favorite), Toast.LENGTH_SHORT).show();
         }
 
         sharedPrefs.edit().putString(key, gson.toJson(favorites)).apply();
@@ -108,6 +108,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
             }
         }
 
-        btnFavorite.setText(isFavorite ? "💔 Quitar de favoritos" : "⭐ Agregar a favoritos");
+        btnFavorite.setText(isFavorite ? getString(R.string.recipe_remove_fav) : getString(R.string.recipe_add_fav));
     }
 }

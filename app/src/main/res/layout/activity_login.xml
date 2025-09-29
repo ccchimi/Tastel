@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tastel Login"
+        android:text="Bievenido a Tastel"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
@@ -38,7 +38,8 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Ingresar"
+        android:background="@color/primary"
         android:layout_marginTop="16dp"/>
 
     <!-- Botón Crear Usuario -->
@@ -47,6 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Crear nuevo usuario"
+        android:background="@color/primary"
         android:layout_marginTop="8dp"/>
 
     <!-- Olvidaste contraseña -->

@@ -21,9 +21,6 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -71,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     private RecipeAdapter adapter;
     private String activeCategory = null;
     private SharedPreferences sharedPrefs;
-    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPrefs = getSharedPreferences("FavoritesPrefs", Context.MODE_PRIVATE);
 
-        // Navigation items
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_recetas) {
@@ -107,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // Referencias
         etSearch = findViewById(R.id.etSearch);
         btnSearch = findViewById(R.id.btnSearch);
         categoriesRow = findViewById(R.id.categoriesLayout);
@@ -125,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
             else adapter.setRecipes(searchRecipes(q));
         });
 
-        // Account menu
         ImageView ivAccount = findViewById(R.id.ivAccount);
         ivAccount.setOnClickListener(v -> {
             PopupMenu menu = new PopupMenu(this, ivAccount);
@@ -133,9 +126,8 @@ public class MainActivity extends AppCompatActivity {
             else menu.getMenu().add("Logout");
 
             menu.setOnMenuItemClickListener(item -> {
-                if(item.getTitle().equals("Login")) {
-                    startActivity(new Intent(this, LoginActivity.class));
-                } else {
+                if(item.getTitle().equals("Login")) startActivity(new Intent(this, LoginActivity.class));
+                else {
                     Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
                     LoginActivity.currentUser = null;
                     startActivity(new Intent(this, LoginActivity.class));
@@ -210,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
 
         String key = "favorites_" + currentUser;
         String json = sharedPrefs.getString(key, null);
-        Type type = new TypeToken<List<Recipe>>(){}.getType();
-        List<Recipe> favorites = json == null ? new ArrayList<>() : new Gson().fromJson(json, type);
+        Type type = new com.google.gson.reflect.TypeToken<List<Recipe>>(){}.getType();
+        List<Recipe> favorites = json == null ? new ArrayList<>() : new com.google.gson.Gson().fromJson(json, type);
 
         if(favorites.isEmpty()) {
             Toast.makeText(this, "No tienes recetas favoritas aún", Toast.LENGTH_SHORT).show();

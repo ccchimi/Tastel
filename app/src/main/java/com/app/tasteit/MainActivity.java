@@ -8,7 +8,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -19,7 +21,11 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +40,11 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
 
-    // Categorías
     private final String[] categories = {
             "Pastas", "Carnes", "Veggie", "Postres", "Sopas",
             "Arroces", "Ensaladas", "Pescados & Mariscos", "Tapas & Snacks", "Sin TACC"
     };
 
-    // Datos: título, categoría, descripción, imagen, tiempo
     private final Object[][] recipesData = {
             {"Spaghetti Bolognesa","Pastas","Clásica pasta italiana con salsa de carne y tomate.", R.drawable.tastel,"30 min"},
             {"Fettuccine Alfredo","Pastas","Crema, manteca y parmesano para una salsa sedosa.", R.drawable.tastel,"25 min"},
@@ -66,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RecipeAdapter adapter;
     private String activeCategory = null;
+    private SharedPreferences sharedPrefs;
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,15 +87,19 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        sharedPrefs = getSharedPreferences("FavoritesPrefs", Context.MODE_PRIVATE);
+
+        // Navigation items
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_recetas) {
-                Toast.makeText(this, "Sección Recetas", Toast.LENGTH_SHORT).show();
+                adapter.setRecipes(getAllRecipes());
             } else if (id == R.id.nav_comunidad) {
                 Toast.makeText(this, "Sección Comunidad", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_favoritos) {
-                Toast.makeText(this, "Sección Favoritos / Listas", Toast.LENGTH_SHORT).show();
+                loadFavorites();
             } else if (id == R.id.nav_logout) {
+                LoginActivity.currentUser = null;
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
             }
@@ -103,40 +113,31 @@ public class MainActivity extends AppCompatActivity {
         categoriesRow = findViewById(R.id.categoriesLayout);
         rvRecipes = findViewById(R.id.rvRecipes);
 
-        // RecyclerView setup
         rvRecipes.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RecipeAdapter(this, getAllRecipes());
         rvRecipes.setAdapter(adapter);
 
-        // Botones de categorías
         createCategoryButtons();
 
-        // Buscar por texto
         btnSearch.setOnClickListener(v -> {
             String q = etSearch.getText().toString().trim().toLowerCase();
-            if (q.isEmpty()) {
-                adapter.setRecipes(getAllRecipes());
-            } else {
-                adapter.setRecipes(searchRecipes(q));
-            }
+            if (q.isEmpty()) adapter.setRecipes(getAllRecipes());
+            else adapter.setRecipes(searchRecipes(q));
         });
 
+        // Account menu
         ImageView ivAccount = findViewById(R.id.ivAccount);
         ivAccount.setOnClickListener(v -> {
             PopupMenu menu = new PopupMenu(this, ivAccount);
-
-            if(LoginActivity.currentUser == null) {
-                menu.getMenu().add("Login");
-            } else {
-                menu.getMenu().add("Logout");
-            }
+            if(LoginActivity.currentUser == null) menu.getMenu().add("Login");
+            else menu.getMenu().add("Logout");
 
             menu.setOnMenuItemClickListener(item -> {
                 if(item.getTitle().equals("Login")) {
                     startActivity(new Intent(this, LoginActivity.class));
-                } else if(item.getTitle().equals("Logout")) {
+                } else {
                     Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
-                    LoginActivity.currentUser = null;  // Cerramos sesión
+                    LoginActivity.currentUser = null;
                     startActivity(new Intent(this, LoginActivity.class));
                     finish();
                 }
@@ -146,67 +147,49 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Construir lista completa
     private List<Recipe> getAllRecipes() {
         List<Recipe> list = new ArrayList<>();
         for (Object[] data : recipesData) {
-            list.add(new Recipe(
-                    (String) data[0],   // título
-                    (String) data[2],   // descripción
-                    (int) data[3],      // drawable
-                    (String) data[4]    // tiempo
-            ));
+            list.add(new Recipe((String)data[0], (String)data[2], (int)data[3], (String)data[4]));
         }
         return list;
     }
 
-    // Buscar
     private List<Recipe> searchRecipes(String q) {
         List<Recipe> list = new ArrayList<>();
         for (Object[] data : recipesData) {
-            if (((String) data[0]).toLowerCase().contains(q)) {
-                list.add(new Recipe(
-                        (String) data[0],
-                        (String) data[2],
-                        (int) data[3],
-                        (String) data[4]
-                ));
+            if(((String)data[0]).toLowerCase().contains(q)) {
+                list.add(new Recipe((String)data[0], (String)data[2], (int)data[3], (String)data[4]));
             }
         }
         return list;
     }
 
-    // Filtro por categorías
     private List<Recipe> filterByCategory(String cat) {
         List<Recipe> list = new ArrayList<>();
         for (Object[] data : recipesData) {
-            if (((String) data[1]).equals(cat)) {
-                list.add(new Recipe(
-                        (String) data[0],
-                        (String) data[2],
-                        (int) data[3],
-                        (String) data[4]
-                ));
+            if(((String)data[1]).equals(cat)) {
+                list.add(new Recipe((String)data[0], (String)data[2], (int)data[3], (String)data[4]));
             }
         }
         return list;
     }
 
-    // Crear botones dinámicamente
     private void createCategoryButtons() {
         categoriesRow.removeAllViews();
-        for (String cat : categories) {
+        for(String cat : categories) {
             Button b = new Button(this);
             b.setText(cat);
             b.setAllCaps(false);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(12, 6, 12, 6);
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            lp.setMargins(12,6,12,6);
             b.setLayoutParams(lp);
 
             b.setOnClickListener(v -> {
-                if (cat.equals(activeCategory)) {
+                if(cat.equals(activeCategory)) {
                     activeCategory = null;
                     adapter.setRecipes(getAllRecipes());
                 } else {
@@ -214,16 +197,32 @@ public class MainActivity extends AppCompatActivity {
                     adapter.setRecipes(filterByCategory(cat));
                 }
             });
-
             categoriesRow.addView(b);
         }
     }
 
+    private void loadFavorites() {
+        String currentUser = LoginActivity.currentUser;
+        if(currentUser == null) {
+            Toast.makeText(this, "Debes iniciar sesión para ver favoritos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String key = "favorites_" + currentUser;
+        String json = sharedPrefs.getString(key, null);
+        Type type = new TypeToken<List<Recipe>>(){}.getType();
+        List<Recipe> favorites = json == null ? new ArrayList<>() : new Gson().fromJson(json, type);
+
+        if(favorites.isEmpty()) {
+            Toast.makeText(this, "No tienes recetas favoritas aún", Toast.LENGTH_SHORT).show();
+        }
+
+        adapter.setRecipes(favorites);
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (toggle != null && toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+        if(toggle != null && toggle.onOptionsItemSelected(item)) return true;
         return super.onOptionsItemSelected(item);
     }
 }

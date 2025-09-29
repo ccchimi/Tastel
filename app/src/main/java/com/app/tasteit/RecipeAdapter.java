@@ -1,6 +1,7 @@
 package com.app.tasteit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -42,9 +41,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         holder.title.setText(recipe.getTitle());
         holder.description.setText(recipe.getDescription());
         holder.time.setText(recipe.getCookingTime());
-
-        // Cargar directamente desde drawable
         holder.image.setImageResource(recipe.getImageResId());
+
+        // Click en el item para abrir RecipeDetailActivity
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, RecipeDetailActivity.class);
+            intent.putExtra("title", recipe.getTitle());
+            intent.putExtra("description", recipe.getDescription());
+            intent.putExtra("image", recipe.getImageResId());
+            intent.putExtra("time", recipe.getCookingTime());
+            context.startActivity(intent);
+        });
     }
 
     @Override

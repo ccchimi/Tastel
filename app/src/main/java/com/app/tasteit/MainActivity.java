@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Sección Recetas", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_comunidad) {
                 Toast.makeText(this, "Sección Comunidad", Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_listas) {
+            } else if (id == R.id.nav_favoritos) {
                 Toast.makeText(this, "Sección Listas", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_logout) {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));

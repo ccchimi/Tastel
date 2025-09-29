@@ -117,7 +117,8 @@ public class MainActivity extends AppCompatActivity {
         // Crear botones de categorias en la fila superior
         createCategoryChips();
 
-        // Render inicial (todas las secciones)
+        // Mostrar todas las recetas al iniciar
+        activeCategory = null;
         renderSections(null);
 
         // Buscar por texto (muestra secciones que contengan la palabra en el título)

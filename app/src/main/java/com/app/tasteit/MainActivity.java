@@ -5,13 +5,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText etSearch;
     Button btnSearch;
-    ChipGroup categoriesRow;
+    LinearLayout categoriesRow;
     LinearLayout recipesContainer;
 
     DrawerLayout drawerLayout;
@@ -115,10 +114,9 @@ public class MainActivity extends AppCompatActivity {
         buildCategoryMap();
 
         // Crear botones de categorias en la fila superior
-        createCategoryChips();
+        createCategoryButtons();
 
-        // Mostrar todas las recetas al iniciar
-        activeCategory = null;
+        // Render inicial (todas las secciones)
         renderSections(null);
 
         // Buscar por texto (muestra secciones que contengan la palabra en el título)
@@ -149,25 +147,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Crear chips de categoria dinámicamente
-    private void createCategoryChips() {
+    // Crea botones de categoria dinámicamente (fila superior)
+    private void createCategoryButtons() {
         categoriesRow.removeAllViews();
         for (String cat : categories) {
-            Chip chip = new Chip(this, null, R.style.Widget_Tastel_Chip);
-            chip.setText(cat);
-            chip.setCheckable(true);
+            Button b = new Button(this);
+            b.setText(cat);
+            // Estilo básico: rounded background via backgroundTint y padding
+            b.setAllCaps(false);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(12, 6, 12, 6);
+            b.setLayoutParams(lp);
 
-            chip.setOnClickListener(v -> {
-                if (chip.isChecked()) {
-                    activeCategory = cat;
-                    renderSections(cat);
-                } else {
+            b.setOnClickListener(v -> {
+                // Si se clickea la misma categoria la deselecciono
+                if (cat.equals(activeCategory)) {
                     activeCategory = null;
                     renderSections(null);
+                    highlightCategoryButton(null);
+                } else {
+                    activeCategory = cat;
+                    renderSections(cat);
+                    highlightCategoryButton(cat);
                 }
             });
 
-            categoriesRow.addView(chip);
+            categoriesRow.addView(b);
         }
     }
 

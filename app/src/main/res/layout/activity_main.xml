@@ -35,8 +35,8 @@
             <!-- Logo a la derecha -->
             <ImageView
                 android:id="@+id/toolbarLogo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/tastel"
                 android:layout_gravity="end"
                 android:contentDescription="Logo Tastel"/>

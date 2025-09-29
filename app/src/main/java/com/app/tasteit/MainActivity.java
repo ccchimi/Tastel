@@ -5,32 +5,29 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.tasteit.models.Recipe;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText etSearch;
     Button btnSearch;
     LinearLayout categoriesRow;
-    LinearLayout recipesContainer;
+    RecyclerView rvRecipes;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -42,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
             "Arroces", "Ensaladas", "Pescados & Mariscos", "Tapas & Snacks", "Sin TACC"
     };
 
-    // Cada receta: {titulo, categoria, descripcion, drawableName}
     private final String[][] recipesData = {
             {"Spaghetti Bolognesa","Pastas","Clásica pasta italiana con salsa de carne y tomate.","tastel"},
             {"Fettuccine Alfredo","Pastas","Crema, manteca y parmesano para una salsa sedosa.","tastel"},
@@ -66,10 +62,7 @@ public class MainActivity extends AppCompatActivity {
             {"Galletas de Avena","Postres","Saludables y crujientes, con pasas.","tastel"}
     };
 
-    // Map categoria -> lista de index de recetasData
-    private Map<String, List<Integer>> categoryMap = new LinkedHashMap<>();
-
-    // Categoria activa (filtro). null = mostrar todas
+    private RecipeAdapter adapter;
     private String activeCategory = null;
 
     @Override
@@ -102,58 +95,57 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        // Referencias de UI
+        // Referencias
         etSearch = findViewById(R.id.etSearch);
         btnSearch = findViewById(R.id.btnSearch);
-        // Para la fila de botones de categorias (la creamos dinámicamente)
-        // Reutilizamos categoriesLayout existente como contenedor de botones
         categoriesRow = findViewById(R.id.categoriesLayout);
-        recipesContainer = findViewById(R.id.recipesContainer);
+        rvRecipes = findViewById(R.id.rvRecipes);
 
-        // Construir el mapa categoria -> indices
-        buildCategoryMap();
+        // RecyclerView setup
+        rvRecipes.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new RecipeAdapter(this, getAllRecipes());
+        rvRecipes.setAdapter(adapter);
 
-        // Crear botones de categorias en la fila superior
+        // Botones de categorías
         createCategoryButtons();
 
-        // Render inicial (todas las secciones)
-        renderSections(null);
-
-        // Buscar por texto (muestra secciones que contengan la palabra en el título)
+        // Buscar por texto
         btnSearch.setOnClickListener(v -> {
             String q = etSearch.getText().toString().trim().toLowerCase();
             if (q.isEmpty()) {
-                // mostrar todo o aplicar categoria activa
-                renderSections(activeCategory);
-                Toast.makeText(this, "Mostrando todas las recetas", Toast.LENGTH_SHORT).show();
+                adapter.setRecipes(getAllRecipes());
             } else {
-                renderSearchResults(q);
+                adapter.setRecipes(searchRecipes(q));
             }
         });
     }
 
-    // Construye el mapa de categoria -> indices
-    private void buildCategoryMap() {
-        for (int i = 0; i < recipesData.length; i++) {
-            String cat = recipesData[i][1];
-            if (!categoryMap.containsKey(cat)) {
-                categoryMap.put(cat, new ArrayList<>());
-            }
-            categoryMap.get(cat).add(i);
+    // Construir lista completa
+    private List<Recipe> getAllRecipes() {
+        List<Recipe> list = new ArrayList<>();
+        for (String[] data : recipesData) {
+            list.add(new Recipe(data[0], data[1], data[2], data[3]));
         }
-        // Asegurar que todas las categories estén en el map, incluso si vacías
-        for (String cat : categories) {
-            if (!categoryMap.containsKey(cat)) categoryMap.put(cat, new ArrayList<>());
-        }
+        return list;
     }
 
-    // Crea botones de categoria dinámicamente (fila superior)
+    // Buscar
+    private List<Recipe> searchRecipes(String q) {
+        List<Recipe> list = new ArrayList<>();
+        for (String[] data : recipesData) {
+            if (data[0].toLowerCase().contains(q)) {
+                list.add(new Recipe(data[0], data[1], data[2], data[3]));
+            }
+        }
+        return list;
+    }
+
+    // Filtro por categorías
     private void createCategoryButtons() {
         categoriesRow.removeAllViews();
         for (String cat : categories) {
             Button b = new Button(this);
             b.setText(cat);
-            // Estilo básico: rounded background via backgroundTint y padding
             b.setAllCaps(false);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -162,15 +154,12 @@ public class MainActivity extends AppCompatActivity {
             b.setLayoutParams(lp);
 
             b.setOnClickListener(v -> {
-                // Si se clickea la misma categoria la deselecciono
                 if (cat.equals(activeCategory)) {
                     activeCategory = null;
-                    renderSections(null);
-                    highlightCategoryButton(null);
+                    adapter.setRecipes(getAllRecipes());
                 } else {
                     activeCategory = cat;
-                    renderSections(cat);
-                    highlightCategoryButton(cat);
+                    adapter.setRecipes(filterByCategory(cat));
                 }
             });
 
@@ -178,122 +167,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Marca visualmente el boton activo (simple)
-    private void highlightCategoryButton(String categoryToHighlight) {
-        int childCount = categoriesRow.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View v = categoriesRow.getChildAt(i);
-            if (v instanceof Button) {
-                Button b = (Button) v;
-                if (b.getText().toString().equals(categoryToHighlight)) {
-                    b.setBackgroundTintList(getResources().getColorStateList(R.color.primary));
-                    b.setTextColor(getResources().getColor(R.color.white));
-                } else {
-                    b.setBackgroundTintList(getResources().getColorStateList(android.R.color.darker_gray));
-                    b.setTextColor(getResources().getColor(R.color.textPrimary));
-                }
+    private List<Recipe> filterByCategory(String cat) {
+        List<Recipe> list = new ArrayList<>();
+        for (String[] data : recipesData) {
+            if (data[1].equals(cat)) {
+                list.add(new Recipe(data[0], data[1], data[2], data[3]));
             }
         }
+        return list;
     }
 
-    // Renderiza todas las secciones (o sólo una categoría si cat != null)
-    private void renderSections(String catFilter) {
-        recipesContainer.removeAllViews();
-
-        // Si queremos sólo una categoría
-        if (catFilter != null) {
-            List<Integer> indices = categoryMap.get(catFilter);
-            if (indices != null && !indices.isEmpty()) {
-                addCategorySection(catFilter, indices);
-            } else {
-                // mensaje vacío
-                TextView empty = new TextView(this);
-                empty.setText("No hay recetas en esta categoría.");
-                empty.setPadding(16, 16, 16, 16);
-                recipesContainer.addView(empty);
-            }
-            return;
-        }
-
-        // Si queremos todas las categorias (en orden definido en categories)
-        for (String cat : categories) {
-            List<Integer> indices = categoryMap.get(cat);
-            if (indices != null && !indices.isEmpty()) {
-                addCategorySection(cat, indices);
-            }
-        }
-    }
-
-    // Render para búsqueda por query: muestra secciones que contengan recetas que coincidan
-    private void renderSearchResults(String q) {
-        recipesContainer.removeAllViews();
-        Map<String, List<Integer>> results = new LinkedHashMap<>();
-
-        // Buscar coincidencias por título
-        for (int i = 0; i < recipesData.length; i++) {
-            String title = recipesData[i][0].toLowerCase();
-            if (title.contains(q)) {
-                String cat = recipesData[i][1];
-                if (!results.containsKey(cat)) results.put(cat, new ArrayList<>());
-                results.get(cat).add(i);
-            }
-        }
-
-        if (results.isEmpty()) {
-            TextView none = new TextView(this);
-            none.setText("No se encontraron recetas para: " + q);
-            none.setPadding(16, 16, 16, 16);
-            recipesContainer.addView(none);
-            return;
-        }
-
-        // Agregar secciones para resultados
-        for (Map.Entry<String, List<Integer>> e : results.entrySet()) {
-            addCategorySection(e.getKey(), e.getValue());
-        }
-    }
-
-    // Agrega una sección (titulo + tarjetas de recetas)
-    private void addCategorySection(String categoryTitle, List<Integer> indices) {
-        // Titulo de sección
-        TextView sectionTitle = new TextView(this);
-        sectionTitle.setText(categoryTitle);
-        sectionTitle.setTextSize(20f);
-        sectionTitle.setPadding(8, 18, 8, 8);
-        sectionTitle.setTextColor(getResources().getColor(R.color.textPrimary));
-        recipesContainer.addView(sectionTitle);
-
-        // Container horizontal para cards (scrollable si querés, aquí vertical por simplicidad)
-        for (int idx : indices) {
-            View cardView = getLayoutInflater().inflate(R.layout.item_recipe, recipesContainer, false);
-
-            TextView title = cardView.findViewById(R.id.recipeTitle);
-            TextView description = cardView.findViewById(R.id.recipeDescription);
-            ImageView image = cardView.findViewById(R.id.recipeImage);
-
-            title.setText(recipesData[idx][0]);
-            description.setText(recipesData[idx][2]);
-
-            // imagen por defecto (tastel) — podés reemplazar más adelante por drawables concretos
-            int imageId = getResources().getIdentifier(recipesData[idx][3], "drawable", getPackageName());
-            if (imageId == 0) imageId = R.mipmap.ic_launcher;
-            image.setImageResource(imageId);
-
-            final int finalIdx = idx;
-            int finalImageId = imageId;
-            cardView.setOnClickListener(v -> {
-                Intent intent = new Intent(MainActivity.this, RecipeDetailActivity.class);
-                intent.putExtra("title", recipesData[finalIdx][0]);
-                intent.putExtra("description", recipesData[finalIdx][2]);
-                intent.putExtra("image", finalImageId);
-                startActivity(intent);
-            });
-
-            recipesContainer.addView(cardView);
-        }
-    }
-
-    // Para que el toggle (hamburguesa) funcione
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (toggle != null && toggle.onOptionsItemSelected(item)) {

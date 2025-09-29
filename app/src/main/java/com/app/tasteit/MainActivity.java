@@ -32,33 +32,34 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
 
-    // Datos: categorias y recetas
+    // Categorías
     private final String[] categories = {
             "Pastas", "Carnes", "Veggie", "Postres", "Sopas",
             "Arroces", "Ensaladas", "Pescados & Mariscos", "Tapas & Snacks", "Sin TACC"
     };
 
-    private final String[][] recipesData = {
-            {"Spaghetti Bolognesa","Pastas","Clásica pasta italiana con salsa de carne y tomate.","tastel"},
-            {"Fettuccine Alfredo","Pastas","Crema, manteca y parmesano para una salsa sedosa.","tastel"},
-            {"Lasagna de Verduras","Pastas","Capas de vegetales asados y bechamel.","tastel"},
-            {"Pollo al horno","Carnes","Jugoso pollo al horno con especias.","tastel"},
-            {"Asado clásico","Carnes","Costillar con chimichurri y fuego lento.","tastel"},
-            {"Albóndigas en salsa","Carnes","Albóndigas caseras con tomate y hierbas.","tastel"},
-            {"Ensalada César","Ensaladas","Lechuga, pollo, crutones y aderezo César.","tastel"},
-            {"Ensalada Mediterránea","Ensaladas","Tomate, pepino, aceitunas y feta.","tastel"},
-            {"Sopa de Calabaza","Sopas","Cremosa y especiada, ideal para otoño.","tastel"},
-            {"Minestrone","Sopas","Sopa italiana de verduras y legumbres.","tastel"},
-            {"Paella Valenciana","Arroces","Arroz con mariscos, pollo y vegetales.","tastel"},
-            {"Risotto de Hongos","Arroces","Cremoso, con parmesano y hongos salteados.","tastel"},
-            {"Tarta de Manzana","Postres","Masa hojaldrada y relleno de manzana.","tastel"},
-            {"Brownie Chocolate","Postres","Intenso y húmedo, con nueces.","tastel"},
-            {"Ceviche de Pescado","Pescados & Mariscos","Pescado marinado en cítricos.","tastel"},
-            {"Salmón a la Plancha","Pescados & Mariscos","Salmón con limón y eneldo.","tastel"},
-            {"Croquetas de Jamón","Tapas & Snacks","Crujientes por fuera, cremosas por dentro.","tastel"},
-            {"Bruschetta Clásica","Tapas & Snacks","Tomate, ajo y albahaca sobre pan tostado.","tastel"},
-            {"Pizza Sin TACC","Sin TACC","Base sin gluten con mozzarella y tomate.","tastel"},
-            {"Galletas de Avena","Postres","Saludables y crujientes, con pasas.","tastel"}
+    // Datos: título, categoría, descripción, imagen, tiempo
+    private final Object[][] recipesData = {
+            {"Spaghetti Bolognesa","Pastas","Clásica pasta italiana con salsa de carne y tomate.", R.drawable.tastel,"30 min"},
+            {"Fettuccine Alfredo","Pastas","Crema, manteca y parmesano para una salsa sedosa.", R.drawable.tastel,"25 min"},
+            {"Lasagna de Verduras","Pastas","Capas de vegetales asados y bechamel.", R.drawable.tastel,"40 min"},
+            {"Pollo al horno","Carnes","Jugoso pollo al horno con especias.", R.drawable.tastel,"50 min"},
+            {"Asado clásico","Carnes","Costillar con chimichurri y fuego lento.", R.drawable.tastel,"2 hs"},
+            {"Albóndigas en salsa","Carnes","Albóndigas caseras con tomate y hierbas.", R.drawable.tastel,"45 min"},
+            {"Ensalada César","Ensaladas","Lechuga, pollo, crutones y aderezo César.", R.drawable.tastel,"15 min"},
+            {"Ensalada Mediterránea","Ensaladas","Tomate, pepino, aceitunas y feta.", R.drawable.tastel,"20 min"},
+            {"Sopa de Calabaza","Sopas","Cremosa y especiada, ideal para otoño.", R.drawable.tastel,"35 min"},
+            {"Minestrone","Sopas","Sopa italiana de verduras y legumbres.", R.drawable.tastel,"40 min"},
+            {"Paella Valenciana","Arroces","Arroz con mariscos, pollo y vegetales.", R.drawable.tastel,"1h 15min"},
+            {"Risotto de Hongos","Arroces","Cremoso, con parmesano y hongos salteados.", R.drawable.tastel,"50 min"},
+            {"Tarta de Manzana","Postres","Masa hojaldrada y relleno de manzana.", R.drawable.tastel,"1h"},
+            {"Brownie Chocolate","Postres","Intenso y húmedo, con nueces.", R.drawable.tastel,"45 min"},
+            {"Ceviche de Pescado","Pescados & Mariscos","Pescado marinado en cítricos.", R.drawable.tastel,"25 min"},
+            {"Salmón a la Plancha","Pescados & Mariscos","Salmón con limón y eneldo.", R.drawable.tastel,"20 min"},
+            {"Croquetas de Jamón","Tapas & Snacks","Crujientes por fuera, cremosas por dentro.", R.drawable.tastel,"35 min"},
+            {"Bruschetta Clásica","Tapas & Snacks","Tomate, ajo y albahaca sobre pan tostado.", R.drawable.tastel,"15 min"},
+            {"Pizza Sin TACC","Sin TACC","Base sin gluten con mozzarella y tomate.", R.drawable.tastel,"40 min"},
+            {"Galletas de Avena","Postres","Saludables y crujientes, con pasas.", R.drawable.tastel,"30 min"}
     };
 
     private RecipeAdapter adapter;
@@ -122,8 +123,13 @@ public class MainActivity extends AppCompatActivity {
     // Construir lista completa
     private List<Recipe> getAllRecipes() {
         List<Recipe> list = new ArrayList<>();
-        for (String[] data : recipesData) {
-            list.add(new Recipe(data[0], data[1], data[2], data[3]));
+        for (Object[] data : recipesData) {
+            list.add(new Recipe(
+                    (String) data[0],   // título
+                    (String) data[2],   // descripción
+                    (int) data[3],      // drawable
+                    (String) data[4]    // tiempo
+            ));
         }
         return list;
     }
@@ -131,15 +137,36 @@ public class MainActivity extends AppCompatActivity {
     // Buscar
     private List<Recipe> searchRecipes(String q) {
         List<Recipe> list = new ArrayList<>();
-        for (String[] data : recipesData) {
-            if (data[0].toLowerCase().contains(q)) {
-                list.add(new Recipe(data[0], data[1], data[2], data[3]));
+        for (Object[] data : recipesData) {
+            if (((String) data[0]).toLowerCase().contains(q)) {
+                list.add(new Recipe(
+                        (String) data[0],
+                        (String) data[2],
+                        (int) data[3],
+                        (String) data[4]
+                ));
             }
         }
         return list;
     }
 
     // Filtro por categorías
+    private List<Recipe> filterByCategory(String cat) {
+        List<Recipe> list = new ArrayList<>();
+        for (Object[] data : recipesData) {
+            if (((String) data[1]).equals(cat)) {
+                list.add(new Recipe(
+                        (String) data[0],
+                        (String) data[2],
+                        (int) data[3],
+                        (String) data[4]
+                ));
+            }
+        }
+        return list;
+    }
+
+    // Crear botones dinámicamente
     private void createCategoryButtons() {
         categoriesRow.removeAllViews();
         for (String cat : categories) {
@@ -164,16 +191,6 @@ public class MainActivity extends AppCompatActivity {
 
             categoriesRow.addView(b);
         }
-    }
-
-    private List<Recipe> filterByCategory(String cat) {
-        List<Recipe> list = new ArrayList<>();
-        for (String[] data : recipesData) {
-            if (data[1].equals(cat)) {
-                list.add(new Recipe(data[0], data[1], data[2], data[3]));
-            }
-        }
-        return list;
     }
 
     @Override

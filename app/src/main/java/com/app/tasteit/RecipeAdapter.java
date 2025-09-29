@@ -57,11 +57,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         holder.description.setText(recipe.getDescription());
         holder.time.setText(recipe.getCookingTime());
         holder.image.setImageResource(recipe.getImageResId());
-
-        // Botón de quitar visible solo si showRemove = true
         holder.removeFav.setVisibility(showRemove ? View.VISIBLE : View.GONE);
 
-        // Click para abrir RecipeDetailActivity
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, RecipeDetailActivity.class);
             intent.putExtra("title", recipe.getTitle());

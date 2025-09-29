@@ -40,6 +40,16 @@
                 android:src="@drawable/tastel"
                 android:layout_gravity="end"
                 android:contentDescription="Logo Tastel"/>
+
+            <!-- ICONO DE CUENTA -->
+            <ImageView
+                android:id="@+id/ivAccount"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_account"
+                android:layout_gravity="end"
+                android:contentDescription="Cuenta"
+                android:layout_marginEnd="8dp"/>
         </androidx.appcompat.widget.Toolbar>
 
         <!-- Buscador con botón a la derecha -->

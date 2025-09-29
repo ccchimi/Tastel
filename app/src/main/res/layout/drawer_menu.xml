@@ -9,7 +9,7 @@
         android:title="Comunidad / Foro"/>
 
     <item
-        android:id="@+id/nav_listas"
+        android:id="@+id/nav_favoritos"
         android:title="Favoritos"/>
 
     <item

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText etSearch;
     Button btnSearch;
-    LinearLayout categoriesRow;
+    ChipGroup categoriesRow;
     LinearLayout recipesContainer;
 
     DrawerLayout drawerLayout;
@@ -147,15 +148,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Crea botones de categoria dinámicamente (fila superior)
-// Crea chips de categoria dinámicamente
+    // Crear chips de categoria dinámicamente
     private void createCategoryChips() {
         categoriesRow.removeAllViews();
         for (String cat : categories) {
-            Chip chip = new Chip(this);
+            Chip chip = new Chip(this, null, R.style.Widget_Tastel_Chip);
             chip.setText(cat);
             chip.setCheckable(true);
-            chip.setClickable(true);
 
             chip.setOnClickListener(v -> {
                 if (chip.isChecked()) {

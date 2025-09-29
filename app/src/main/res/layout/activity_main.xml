@@ -85,6 +85,7 @@
                 android:orientation="horizontal"
                 app:singleLine="true"
                 app:singleSelection="true"
+                style="@style/Widget.Tastel.ChipGroup"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"/>
         </HorizontalScrollView>

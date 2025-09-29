@@ -279,11 +279,12 @@ public class MainActivity extends AppCompatActivity {
             image.setImageResource(imageId);
 
             final int finalIdx = idx;
+            int finalImageId = imageId;
             cardView.setOnClickListener(v -> {
                 Intent intent = new Intent(MainActivity.this, RecipeDetailActivity.class);
                 intent.putExtra("title", recipesData[finalIdx][0]);
                 intent.putExtra("description", recipesData[finalIdx][2]);
-                intent.putExtra("image", imageId);
+                intent.putExtra("image", finalImageId);
                 startActivity(intent);
             });
 

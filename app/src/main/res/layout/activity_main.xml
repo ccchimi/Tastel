@@ -73,7 +73,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Busca tu nueva creacion..."
+                android:hint="@string/home_search_hint"
                 android:padding="8dp"
                 android:background="@drawable/edit_text_background"/>
 
@@ -81,7 +81,7 @@
                 android:id="@+id/btnSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Buscar"
+                android:text="@string/home_search_button"
                 android:textColor="@android:color/white"
                 android:backgroundTint="@color/primary"
                 android:layout_marginStart="8dp"/>

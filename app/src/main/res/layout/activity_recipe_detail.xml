@@ -55,7 +55,7 @@
                 android:id="@+id/btnFavorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⭐ Favorito"
+                android:text="@string/recipe_add_fav"
                 android:backgroundTint="@color/primary"
                 android:textColor="@color/white"
                 android:layout_marginEnd="16dp"/>
@@ -64,7 +64,7 @@
                 android:id="@+id/btnBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Volver"
+                android:text="@string/recipe_back"
                 android:backgroundTint="@color/textSecondary"
                 android:textColor="@color/white"/>
         </LinearLayout>

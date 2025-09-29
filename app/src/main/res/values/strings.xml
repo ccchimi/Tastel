@@ -3,4 +3,5 @@
     <string name="search_hint">¿Qué quieres cocinar hoy?</string>
     <string name="categories">Categorías</string>
     <string name="btn_search">Buscar</string>
+    <string name="recipe_image">Imagen de la receta</string>
 </resources>

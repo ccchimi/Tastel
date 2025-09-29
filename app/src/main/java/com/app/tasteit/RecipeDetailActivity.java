@@ -44,7 +44,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         sharedPrefs = getSharedPreferences("FavoritesPrefs", Context.MODE_PRIVATE);
 
         // Recuperar datos desde MainActivity
-        recipeTitle = getIntent().getStringExtra("title");
+        recipeTitle = getIntent().getStringExtra("");
         recipeDescription = getIntent().getStringExtra("description");
         recipeImage = getIntent().getIntExtra("image", R.drawable.tastel);
         recipeTime = getIntent().getStringExtra("time");

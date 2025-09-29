@@ -24,7 +24,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     private Context context;
     private List<Recipe> recipeList;
-    private boolean showRemove; // true si estamos mostrando favoritos
+    private boolean showRemove;
 
     // Constructor con 3 parámetros
     public RecipeAdapter(Context context, List<Recipe> recipeList, boolean showRemove) {

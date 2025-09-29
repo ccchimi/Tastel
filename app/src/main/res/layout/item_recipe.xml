@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Imagen de la receta -->
         <ImageView
             android:id="@+id/recipeImage"
             android:layout_width="90dp"
@@ -30,7 +29,6 @@
             android:background="@drawable/edit_text_background"
             android:clipToOutline="true"/>
 
-        <!-- Contenido de la receta -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,12 +69,11 @@
                 android:layout_marginTop="4dp"/>
         </LinearLayout>
 
-        <!-- Botón Quitar Favorito -->
         <ImageView
             android:id="@+id/btnRemoveFav"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/quitar"
+            android:src="@drawable/ic_remove_fav"
             android:contentDescription="Quitar de favoritos"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="8dp"

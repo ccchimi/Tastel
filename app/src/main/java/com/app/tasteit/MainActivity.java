@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -117,6 +119,25 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 adapter.setRecipes(searchRecipes(q));
             }
+        });
+
+        // ICONO DE CUENTA - PopupMenu login/logout
+        ImageView ivAccount = findViewById(R.id.ivAccount);
+        ivAccount.setOnClickListener(v -> {
+            PopupMenu menu = new PopupMenu(this, ivAccount);
+            menu.getMenu().add("Login");
+            menu.getMenu().add("Logout");
+            menu.setOnMenuItemClickListener(item -> {
+                if(item.getTitle().equals("Login")) {
+                    startActivity(new Intent(this, LoginActivity.class));
+                } else if(item.getTitle().equals("Logout")) {
+                    Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, LoginActivity.class));
+                    finish();
+                }
+                return true;
+            });
+            menu.show();
         });
     }
 

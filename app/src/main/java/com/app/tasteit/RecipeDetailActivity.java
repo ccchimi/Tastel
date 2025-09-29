@@ -1,4 +1,4 @@
-package com.app.tastel;
+package com.app.tasteit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.app.tasteit.R;
 
 public class RecipeDetailActivity extends AppCompatActivity {
 

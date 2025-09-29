@@ -1,4 +1,4 @@
-package com.app.tastel;
+package com.app.tasteit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.app.tasteit.R;
 
 public class LoginActivity extends AppCompatActivity {
 

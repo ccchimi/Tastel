@@ -1,12 +1,10 @@
-package com.app.tastel;
+package com.app.tasteit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-
-import com.app.tasteit.R;
 
 public class SplashActivity extends AppCompatActivity {
     @Override

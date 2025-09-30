@@ -46,8 +46,6 @@ La app permite buscar recetas, filtrarlas por categorías, ver un detalle con im
 - Drawer lateral
 - Detalle de receta
 
-*(Pegar aquí imágenes de mockups o screenshots reales de la app en ejecución)*
-
 ---
 
 ## Tecnologías usadas
